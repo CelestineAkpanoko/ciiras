@@ -1,6 +1,6 @@
 # CIIRAS — CI Issues Resolver Assurance System
 
-![CIIRAS logo](img/ciiras%20logo.png.png)
+![CIIRAS logo](img/ciiras-logo.png)
 
 CIIRAS (CI Issues Resolver Assurance System) is a safety-first, agentic system for **detecting, diagnosing, validating, and resolving CI failures**.
 
