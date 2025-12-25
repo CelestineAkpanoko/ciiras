@@ -1,0 +1,22 @@
+﻿flowchart TB
+    CI[CI Signal Sources<br/>GitHub Actions / Future CI] --> INGEST[Event Ingest]
+
+    INGEST --> DETECT[Detection & Monitoring<br/>CI Adapter Layer<br/>- webhook verify<br/>- dedupe & rate limit<br/>- metadata fetch (MCP)]
+
+    DETECT --> INCIDENT[Incident Model<br/>Canonical State<br/>- lifecycle<br/>- evidence snapshot<br/>- audit refs]
+
+    INCIDENT --> ANALYSIS[Analysis Pipeline<br/>- log normalization<br/>- error span extraction<br/>- TS / Next classification<br/>- repo context gather (MCP)]
+
+    ANALYSIS --> STRATEGY[Strategy & Resolution Pipeline<br/>- bounded strategies<br/>- patch plans<br/>- policy pre-check]
+
+    STRATEGY --> VALIDATE[Validation Layer<br/>Deterministic & Isolated<br/>- FAST / FULL validation<br/>- allowlisted commands]
+
+    VALIDATE --> POLICY[Policy Engine<br/>Final Authority<br/>- confidence scoring<br/>- risk classification<br/>- action gating]
+
+    POLICY -->|PR allowed| PR[Pull Request Creation<br/>Evidence + Rationale]
+    POLICY -->|Low confidence / blocked| COMMENT[Comment-Only Output<br/>Diagnosis + Suggested Patch]
+    POLICY -->|Duplicate / non-actionable| NOACTION[No Action]
+
+    PR --> LEARN[Learning & Assurance Layer<br/>- outcomes<br/>- strategy weights<br/>- audit log]
+    COMMENT --> LEARN
+    NOACTION --> LEARN

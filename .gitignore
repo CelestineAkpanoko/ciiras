@@ -1,0 +1,103 @@
+########################################
+# Node / TypeScript
+########################################
+node_modules/
+.pnpm-store/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+dist/
+build/
+out/
+coverage/
+
+*.tsbuildinfo
+
+########################################
+# Environment & Secrets
+########################################
+.env
+.env.*
+!.env.example
+
+*.pem
+*.key
+*.crt
+
+########################################
+# OS / Editor Noise
+########################################
+.DS_Store
+Thumbs.db
+
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+
+.idea/
+*.swp
+*.swo
+
+########################################
+# Logs & Runtime Artifacts
+########################################
+logs/
+*.log
+
+########################################
+# CIIRAS Runtime Artifacts
+########################################
+# Local incident/state snapshots
+.local-state/
+.incidents/
+.audit/
+.replay/
+
+# Validation artifacts (containers, temp workspaces)
+.validation/
+.sandbox/
+.tmp/
+.tmp-ciiras/
+
+########################################
+# SQLite / Local Storage
+########################################
+*.sqlite
+*.sqlite3
+*.db
+
+########################################
+# Test & Fixture Output
+########################################
+fixtures/**/output/
+fixtures/**/generated/
+
+########################################
+# GitHub Actions / CI Artifacts
+########################################
+.artifacts/
+.action-cache/
+
+########################################
+# Serverless / Cloud (Mode B)
+########################################
+.aws/
+.sam/
+.serverless/
+
+########################################
+# Build Tools
+########################################
+.turbo/
+.nx/
+.eslintcache
+.cache/
+
+########################################
+# Misc
+########################################
+*.tgz
+*.tar.gz
+
+scripts/

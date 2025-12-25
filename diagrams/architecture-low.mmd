@@ -1,0 +1,36 @@
+﻿flowchart TB
+    EXT[External CI Events<br/>workflow_run / check_suite] --> RECEIVER[Ingress Receiver<br/>- signature verify<br/>- idempotency key<br/>- rate limiting]
+
+    RECEIVER --> ORCH[Orchestrator<br/>Incident State Machine<br/>OPEN → ANALYZING → FIXING → VALIDATING → DECIDING → CLOSED]
+
+    ORCH --> STATE[(State Store)<br/>Incidents · Spans · Candidates · Outcomes]
+    ORCH --> AUDIT[(Audit Log)<br/>Append-only<br/>Tool calls + decisions]
+
+    ORCH --> ANALYZER[Analysis Worker<br/>- fetch logs<br/>- normalize & extract spans<br/>- classify failure<br/>- gather repo context]
+
+    ANALYZER --> MCP_READ[MCP Tool Layer (Read)<br/>- github-mcp<br/>- filesystem-mcp<br/>- ts-ls-mcp]
+    MCP_READ --> ANALYZER
+
+    ANALYZER --> STRAT[Strategy Engine<br/>- TS2307 / TS2345 / Next TS<br/>- bounded patch candidates]
+
+    STRAT --> POLICY_PRE[Policy Engine (Pre-Write Gate)<br/>- forbidden paths/actions<br/>- size limits<br/>- min confidence]
+
+    POLICY_PRE -->|ALLOW_VALIDATE| VALIDATOR[Validation Runner<br/>Isolated Workspace<br/>- apply patch<br/>- run allowlisted cmds]
+    POLICY_PRE -->|DENY| COMMENT_ONLY[Comment-Only Pipeline<br/>Diagnosis + Evidence]
+
+    VALIDATOR --> MCP_WRITE[MCP Tool Layer (Write/Run)<br/>- filesystem applyPatch<br/>- runner-mcp<br/>- github dispatch]
+    MCP_WRITE --> VALIDATOR
+
+    VALIDATOR --> POLICY_FINAL[Policy Engine (Final Decision)<br/>- confidence_total<br/>- risk_level<br/>- validation status]
+
+    POLICY_FINAL -->|OPEN PR| PR_PIPE[PR Pipeline<br/>- branch & commit<br/>- PR body w/ evidence<br/>- auto-merge optional]
+    POLICY_FINAL -->|COMMENT_ONLY| COMMENT_ONLY
+    POLICY_FINAL -->|NO_ACTION| NOACTION[No Action]
+
+    PR_PIPE --> MCP_GH[github-mcp (Write)<br/>createPR / label / auto-merge]
+    COMMENT_ONLY --> MCP_GH
+    MCP_GH --> AUDIT
+
+    PR_PIPE --> LEARNING[Learning Loop<br/>- update strategy success<br/>- bounded ranking]
+    COMMENT_ONLY --> LEARNING
+    NOACTION --> LEARNING
