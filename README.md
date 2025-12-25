@@ -1,5 +1,7 @@
 # CIIRAS — CI Issues Resolver Assurance System
 
+![CIIRAS logo](img/ciiras%20logo.png.png)
+
 CIIRAS (CI Issues Resolver Assurance System) is a safety-first, agentic system for **detecting, diagnosing, validating, and resolving CI failures**.
 
 CIIRAS monitors CI pipelines (GitHub Actions first), constructs evidence-grounded failure reports, proposes **bounded and explainable fixes**, validates them deterministically, and only then proposes changes via **auditable pull requests**.
