@@ -1,22 +1,22 @@
 ﻿flowchart TB
-    CI[CI Signal Sources<br/>GitHub Actions / Future CI] --> INGEST[Event Ingest]
+    CI["CI Signal Sources\nGitHub Actions / Future CI"] --> INGEST[Event Ingest]
 
-    INGEST --> DETECT[Detection & Monitoring<br/>CI Adapter Layer<br/>- webhook verify<br/>- dedupe & rate limit<br/>- metadata fetch (MCP)]
+    INGEST --> DETECT["Detection & Monitoring\nCI Adapter Layer\n- webhook verify\n- dedupe & rate limit\n- metadata fetch via MCP"]
 
-    DETECT --> INCIDENT[Incident Model<br/>Canonical State<br/>- lifecycle<br/>- evidence snapshot<br/>- audit refs]
+    DETECT --> INCIDENT["Incident Model\nCanonical State\n- lifecycle\n- evidence snapshot\n- audit refs"]
 
-    INCIDENT --> ANALYSIS[Analysis Pipeline<br/>- log normalization<br/>- error span extraction<br/>- TS / Next classification<br/>- repo context gather (MCP)]
+    INCIDENT --> ANALYSIS["Analysis Pipeline\n- log normalization\n- error span extraction\n- TS / Next classification\n- repo context gather via MCP"]
 
-    ANALYSIS --> STRATEGY[Strategy & Resolution Pipeline<br/>- bounded strategies<br/>- patch plans<br/>- policy pre-check]
+    ANALYSIS --> STRATEGY["Strategy & Resolution Pipeline\n- bounded strategies\n- patch plans\n- policy pre-check"]
 
-    STRATEGY --> VALIDATE[Validation Layer<br/>Deterministic & Isolated<br/>- FAST / FULL validation<br/>- allowlisted commands]
+    STRATEGY --> VALIDATE["Validation Layer\nDeterministic & Isolated\n- FAST / FULL validation\n- allowlisted commands"]
 
-    VALIDATE --> POLICY[Policy Engine<br/>Final Authority<br/>- confidence scoring<br/>- risk classification<br/>- action gating]
+    VALIDATE --> POLICY["Policy Engine\nFinal Authority\n- confidence scoring\n- risk classification\n- action gating"]
 
-    POLICY -->|PR allowed| PR[Pull Request Creation<br/>Evidence + Rationale]
-    POLICY -->|Low confidence / blocked| COMMENT[Comment-Only Output<br/>Diagnosis + Suggested Patch]
+    POLICY -->|PR allowed| PR["Pull Request Creation\nEvidence + Rationale"]
+    POLICY -->|Low confidence / blocked| COMMENT["Comment-Only Output\nDiagnosis + Suggested Patch"]
     POLICY -->|Duplicate / non-actionable| NOACTION[No Action]
 
-    PR --> LEARN[Learning & Assurance Layer<br/>- outcomes<br/>- strategy weights<br/>- audit log]
+    PR --> LEARN["Learning & Assurance Layer\n- outcomes\n- strategy weights\n- audit log"]
     COMMENT --> LEARN
     NOACTION --> LEARN
