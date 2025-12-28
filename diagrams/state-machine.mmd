@@ -1,0 +1,36 @@
+﻿stateDiagram-v2
+  [*] --> new
+
+  new --> queued
+  queued --> acquiring_logs
+  acquiring_logs --> analyzing
+  analyzing --> strategizing
+  strategizing --> validating
+  validating --> pr_opened
+  pr_opened --> closed_noop
+
+  strategizing --> commented
+  validating --> commented
+  commented --> closed_noop
+
+  acquiring_logs --> needs_human
+  analyzing --> needs_human
+  strategizing --> needs_human
+  validating --> needs_human
+  pr_opened --> needs_human
+  commented --> needs_human
+
+  needs_human --> queued
+
+  new --> failed
+  queued --> failed
+  acquiring_logs --> failed
+  analyzing --> failed
+  strategizing --> failed
+  validating --> failed
+  pr_opened --> failed
+  commented --> failed
+  needs_human --> failed
+
+  closed_noop --> [*]
+  failed --> [*]
