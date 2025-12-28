@@ -1,10 +1,11 @@
 import { z } from "zod";
+import { EvidenceRefBaseSchema } from "../schemas/evidence.js";
 
-export const AuditEvidenceRefSchema = z.object({
-  kind: z.enum(["run_log", "job_log", "annotation", "file", "command_output", "artifact"]),
-  uri: z.string().min(1),
-  sha256: z.string().regex(/^[a-f0-9]{64}$/).optional()
-});
+/**
+ * Audit evidence references use the base evidence schema.
+ * No note field needed in audit events - keep audit trail concise.
+ */
+export const AuditEvidenceRefSchema = EvidenceRefBaseSchema;
 
 export const AuditEventSchema = z.object({
   at: z.string().datetime(),
